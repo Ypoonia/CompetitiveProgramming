@@ -1,2 +1,2 @@
 # CompetitiveProgramming
-My random competitive programming solutions (and other stuff)
+My random competitive programming template (and other stuff)
