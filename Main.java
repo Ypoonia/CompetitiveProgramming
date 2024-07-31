@@ -1,10 +1,11 @@
+import java.awt.event.MouseAdapter;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.security.spec.RSAOtherPrimeInfo;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.*;
-
-
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 // हर हर महादेव
@@ -66,7 +67,6 @@ public class Main {
             return str;
         }
     }
-    static final long MOD = 1000000007; // 1e9 + 7
 
     public static long powerOfTwo(int n) {
         long result = 1;
@@ -77,9 +77,9 @@ public class Main {
         return result;
     }
 
-    public static int gcd(int a, int b) {
+    public static long gcd(long a, long b) {
         while (b != 0) {
-            int temp = b;
+            long temp = b;
             b = a % b;
             a = temp;
         }
@@ -134,6 +134,7 @@ public class Main {
 
         merge(a, l, r, mid, n - mid);
     }
+
     private static void addMap(HashMap<Integer, Integer> map, int key) {
         map.put(key, map.getOrDefault(key, 0) + 1);
     }
@@ -197,20 +198,6 @@ public class Main {
         return curr / 2; // Example parent calculation
     }
 
-    static class Pair implements Comparable<Pair> {
-        long first;
-        long second;
-
-        Pair(long first, long second) {
-            this.first = first;
-            this.second = second;
-        }
-
-
-        public int compareTo(Pair other) {
-            return Long.compare(this.first, other.first);
-        }
-    }
     public static void reverseArray(int[] array) {
         int start = 0;
         int end = array.length - 1;
@@ -225,39 +212,183 @@ public class Main {
         }
     }
 
+    public static long fn(long n, long a, long b, long k) {
+        long mod = k * b - k * (k - 1) / 2;
+        long reg = (n - k) * a;
+        return mod + reg;
+    }
 
+    public class Pair<F, S> {
+        private final F first;
+        private final S second;
 
+        public Pair(F first, S second) {
+            this.first = first;
+            this.second = second;
+        }
 
+        public F getFirst() {
+            return first;
+        }
+
+        public S getSecond() {
+            return second;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Pair<?, ?> pair = (Pair<?, ?>) o;
+
+            if (first != null ? !first.equals(pair.first) : pair.first != null) return false;
+            return second != null ? second.equals(pair.second) : pair.second == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = first != null ? first.hashCode() : 0;
+            result = 31 * result + (second != null ? second.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "first=" + first +
+                    ", second=" + second +
+                    '}';
+        }
+    }
 
 
     static Random random = new Random();
+    static  Stack<Integer> stk = new Stack<>();
 
-    public static void main(String[] args) throws IOException {
-//  t = in.nextInt();
- int t=1;
-  while (t-- > 0) {
-            solve();
-      // ^  but I'll try it;
+    public static int[] integerToArray(int number) {
+        boolean isNegative = number < 0;
+        number = Math.abs(number);
+
+        String numberStr = Long.toString(number);
+        char[] charArray = numberStr.toCharArray();
+
+        int[] digitArray = new int[charArray.length];
+
+        for (int i = 0; i < charArray.length; i++) {
+            digitArray[i] = Character.getNumericValue(charArray[i]);
         }
- }
 
-    // A
+        if (isNegative) {
+            digitArray[0] = -digitArray[0];
+        }
 
+        return digitArray;
+    }
 
-    /*  stuff you should look for
-     * int overflow, array bounds
-     * special cases (n=1?)
-     * do smth instead of nothing and stay organized
-     * WRITE STUFF DOWN
-     * DON'T GET STUCK ON ONE APPROACH; */
+    public static long lcm(long a, long b) {
+        long max;
+        if (a > b) {
+            max = a;
+        } else {
+            max = b;
+        }
+        while (true) {
+            if (max % a == 0 && max % b == 0) {
+                break;
+            }
+            max++;
+        }
+        return max;
+    }
 
-    static int n ;
-    static long dp[];
-    static boolean flag = true;
+    public static boolean isPrime(long n) {
+        // Corner cases
+        if (n <= 1) {
+            return false;
+        }
+        if (n <= 3) {
+            return true;
+        }
 
-    public static void solve() throws IOException {
+        // This is checked so that we can skip
+        // middle five numbers in below loop
+        if (n % 2 == 0 || n % 3 == 0) {
+            return false;
+        }
+
+        for (int i = 5; i * i <= n; i += 6) {
+            if (n % i == 0 || n % (i + 2) == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean isPalindrome(ArrayList<Integer> arr) {
+        int i = 0;
+        int j = arr.size() - 1;
+        while (i <= j) {
+            if (!arr.get(i).equals(arr.get(j))) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    private static boolean allSame(int[] a) {
+        for (int i = 1; i < a.length; i++) {
+            if (a[i] != a[0]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isPeak(int[][] a, int n, int m, int i, int j, int value) {
+        if (i > 0 && a[i - 1][j] >= value) return false;
+        if (i < n - 1 && a[i + 1][j] >= value) return false;
+        if (j > 0 && a[i][j - 1] >= value) return false;
+        if (j < m - 1 && a[i][j + 1] >= value) return false;
+        return true;
+    }
+    static void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+
+    public static int numbOfNotMatch(String a, String b, int stI) {
+
+        int res = stI;
+        for (int i = 0; i < a.length() && stI < b.length(); i++) {
+            if (a.charAt(i) == b.charAt(stI)) {
+                stI++;
+            }
+        }
+
+        return (b.length() - stI) + res;
+    }
+
+    public static void main(String[] args) throws Exception {
+//  int t = 1;
+        int t = in.nextInt();
+        while (t-- > 0) {
+            solve();
+        }
+
+    }
+
+    static final long MOD = 1000000007; // 1e9 + 7
+    static final long SPECIAL_CASE = 999966000289L;
+
+    //may the force be with me
+    // A<3
+    public static void solve() throws Exception {
         
-
     }
 
 
@@ -265,22 +396,5 @@ public class Main {
 
 
 
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
