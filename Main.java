@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.math.BigDecimal;
 
 
 // हर हर महादेव
@@ -77,13 +78,8 @@ public class Main {
         return result;
     }
 
-    public static long gcd(long a, long b) {
-        while (b != 0) {
-            long temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
+    public static int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
     }
 
     public static int lowerBound(int[] a, long x) {
@@ -100,11 +96,11 @@ public class Main {
         return ans;
     }
 
-    public static int upperBound(int[] a, int n, int x) {
+    public static int upperBound(int[] a, int x) {
         // Write your code here
         int low = 0;
-        int high = n - 1;
-        int ans = n;
+        int high = a.length - 1;
+        int ans = a.length;
         while (low <= high) {
             int mid = (low + high) / 2;
             if (a[mid] > x) {
@@ -194,6 +190,7 @@ public class Main {
         return true;
     }
 
+
     private static int getParent(int curr) {
         return curr / 2; // Example parent calculation
     }
@@ -262,9 +259,8 @@ public class Main {
         }
     }
 
-
     static Random random = new Random();
-    static  Stack<Integer> stk = new Stack<>();
+    static Stack<Integer> stk = new Stack<>();
 
     public static int[] integerToArray(int number) {
         boolean isNegative = number < 0;
@@ -302,6 +298,7 @@ public class Main {
         return max;
     }
 
+
     public static boolean isPrime(long n) {
         // Corner cases
         if (n <= 1) {
@@ -310,13 +307,11 @@ public class Main {
         if (n <= 3) {
             return true;
         }
-
         // This is checked so that we can skip
         // middle five numbers in below loop
         if (n % 2 == 0 || n % 3 == 0) {
             return false;
         }
-
         for (int i = 5; i * i <= n; i += 6) {
             if (n % i == 0 || n % (i + 2) == 0) {
                 return false;
@@ -326,11 +321,11 @@ public class Main {
         return true;
     }
 
-    public static boolean isPalindrome(ArrayList<Integer> arr) {
+    public static boolean isPalindrome(String s) {
         int i = 0;
-        int j = arr.size() - 1;
+        int j = s.length() - 1;
         while (i <= j) {
-            if (!arr.get(i).equals(arr.get(j))) {
+            if (s.charAt(i) != s.charAt(j)) {
                 return false;
             }
             i++;
@@ -355,10 +350,55 @@ public class Main {
         if (j < m - 1 && a[i][j + 1] >= value) return false;
         return true;
     }
+
+    static long cu(long x1, long y1, long x2, long y2) {
+        long deltaX = x2 - x1;
+        long deltaY = y2 - y1;
+        return deltaX * deltaX + deltaY * deltaY;
+    }
+
     static void swap(int[] a, int i, int j) {
         int temp = a[i];
         a[i] = a[j];
         a[j] = temp;
+    }
+
+    static int ceil(int a, int b) {
+        int res = a / b;
+        if (a % b != 0) res++;
+        return res;
+    }
+
+    public static int bin(int[] arr, int val, int high, int low) {
+        if (high - low == 1) {
+            return (low);
+        }
+        int mid = (low + high) / 2;
+        if (arr[mid] > val) {
+            return (bin(arr, val, mid, low));
+        } else {
+            return (bin(arr, val, high, mid));
+        }
+    }
+
+    static class tool {
+        int num;
+        int loc;
+        char c;
+
+        public tool(int num, int loc, char c) {
+            this.num = num;
+            this.loc = loc;
+            this.c = c;
+        }
+
+        @Override
+        public String toString() {
+            return "tool{" +
+                    "num=" + num +
+                    ", c=" + c +
+                    '}';
+        }
     }
 
     public static int numbOfNotMatch(String a, String b, int stI) {
@@ -372,29 +412,50 @@ public class Main {
 
         return (b.length() - stI) + res;
     }
+    public static void YES(boolean flag)throws Exception
+    {
+        if(flag)out.println("YES");
+        else  out.println("NO");
+    }
+
+    static PrintWriter out = new PrintWriter(System.out);
 
     public static void main(String[] args) throws Exception {
-//  int t = 1;
-        int t = in.nextInt();
+        int t = 1;
+//        int t = in.nextInt();
         while (t-- > 0) {
             solve();
         }
 
     }
 
-    static final long MOD = 1000000007; // 1e9 + 7
+    static final int MOD = 1000000007; // 1e9 + 7
     static final long SPECIAL_CASE = 999966000289L;
 
     //may the force be with me
     // A<3
+
+
     public static void solve() throws Exception {
-        
+       
     }
 
 
-
-
-
-
-
 }
+
+
+
+
+
+
+/*
+
+ */
+
+
+
+
+
+
+
+
