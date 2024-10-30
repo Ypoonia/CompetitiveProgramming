@@ -14,6 +14,16 @@ import java.math.BigDecimal;
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static FastReader in = new FastReader();
+    
+      static class Node {
+        int data;
+        Node left, right;
+
+        public Node(int item) {
+            data = item;
+            left = right = null;
+        }
+    }
 
     static class FastReader { //I don't understand how this works lmao
         BufferedReader br;
